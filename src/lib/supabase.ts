@@ -99,3 +99,40 @@ export interface ContactMessage {
   subject: string;
   message: string;
 }
+
+// Avatar upload helper
+export async function uploadAvatar(file: File, profileId: string) {
+  const fileName = `${profileId}-${Date.now()}`;
+  const { error } = await supabase.storage
+    .from('avatars')
+    .upload(fileName, file, { upsert: true });
+
+  if (error) throw error;
+
+  // Get public URL
+  const { data: { publicUrl } } = supabase.storage
+    .from('avatars')
+    .getPublicUrl(fileName);
+
+  // Update profile with avatar URL
+  const { error: updateError } = await supabase
+    .from('profile')
+    .update({ avatar_url: publicUrl })
+    .eq('id', profileId);
+
+  if (updateError) throw updateError;
+
+  return publicUrl;
+}
+
+// Update avatar URL directly
+export async function updateAvatarUrl(profileId: string, avatarUrl: string) {
+  const { error } = await supabase
+    .from('profile')
+    .update({ avatar_url: avatarUrl })
+    .eq('id', profileId);
+
+  if (error) throw error;
+  return avatarUrl;
+}
+
