@@ -1,6 +1,6 @@
 import { useState, FormEvent } from 'react';
 import { Mail, Send, CheckCircle } from 'lucide-react';
-import { supabase, ContactMessage } from '../lib/supabase';
+import { ContactMessage } from '../lib/supabase';
 import emailjs from '@emailjs/browser';
 
 export default function Contact() {
@@ -19,10 +19,6 @@ export default function Contact() {
     setSubmitStatus('idle');
 
     try {
-      // Insert into Supabase
-      const { error } = await supabase.from('contact_messages').insert([formData]);
-      if (error) throw error;
-
       // Send email via EmailJS
       await emailjs.send(
         'service_xuchj4m',
