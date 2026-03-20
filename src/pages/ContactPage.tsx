@@ -1,11 +1,16 @@
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
+import type { Profile } from '../lib/portfolio';
 
-export default function ContactPage() {
+interface ContactPageProps {
+  readonly profile: Profile | null;
+}
+
+export default function ContactPage({ profile }: ContactPageProps) {
   return (
-    <div className="min-h-screen bg-white pt-20">
-      <Contact />
+    <main className="page-shell pt-20">
+      <Contact profile={profile} />
       <Footer />
-    </div>
+    </main>
   );
 }

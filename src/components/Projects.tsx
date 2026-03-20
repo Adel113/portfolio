@@ -1,89 +1,118 @@
 import { ExternalLink, Github } from 'lucide-react';
-import { Project } from '../lib/supabase';
+import type { Project } from '../lib/portfolio';
 
 interface ProjectsProps {
   projects: Project[];
 }
 
+const categoryOrder = ['Data / IA', 'Developpement logiciel / web / mobile'];
+
+const categoryCopy: Record<string, string> = {
+  'Data / IA': 'Projets axes analyse de donnees, machine learning, vision par ordinateur et experimentation.',
+  'Developpement logiciel / web / mobile':
+    'Applications et outils construits avec une logique produit, architecture claire et execution technique.',
+};
+
 export default function Projects({ projects }: ProjectsProps) {
-  const sortedProjects = [...projects].sort((a, b) => {
-    if (a.featured !== b.featured) return a.featured ? -1 : 1;
-    return a.order_index - b.order_index;
-  });
+  const groupedProjects = projects.reduce<Record<string, Project[]>>((accumulator, project) => {
+    if (!accumulator[project.category]) accumulator[project.category] = [];
+    accumulator[project.category].push(project);
+    return accumulator;
+  }, {});
+
+  const orderedCategories = [
+    ...categoryOrder.filter((category) => groupedProjects[category]?.length),
+    ...Object.keys(groupedProjects).filter((category) => !categoryOrder.includes(category)),
+  ];
 
   return (
-    <section id="projects" className="py-20 bg-white">
-      <div className="max-w-6xl mx-auto px-6">
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 text-slate-900">
-          Projets Mis en Avant
-        </h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {sortedProjects.map((project) => (
-            <div
-              key={project.id}
-              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 flex flex-col"
-            >
-              {project.image_url ? (
-                <img
-                  src={project.image_url}
-                  alt={project.title}
-                  className="w-full h-48 object-cover"
-                />
-              ) : (
-                <div className="w-full h-48 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                  <span className="text-white text-4xl font-bold">
-                    {project.title.substring(0, 2).toUpperCase()}
-                  </span>
-                </div>
-              )}
-              <div className="p-6 flex-1 flex flex-col">
-                {project.featured && (
-                  <span className="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 text-xs font-semibold rounded-full mb-3 w-fit">
-                    Mis en Avant
-                  </span>
-                )}
-                <h3 className="text-2xl font-bold mb-3 text-slate-900">
-                  {project.title}
-                </h3>
-                <p className="text-gray-600 mb-4 flex-1">{project.description}</p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.technologies.map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-3 py-1 bg-slate-100 text-slate-700 text-sm rounded-full"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-                <div className="flex gap-4">
-                  {project.demo_url && (
-                    <a
-                      href={project.demo_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium transition-colors"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                      Démo Live
-                    </a>
-                  )}
-                  {project.github_url && (
-                    <a
-                      href={project.github_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-gray-600 hover:text-gray-700 font-medium transition-colors"
-                    >
-                      <Github className="w-4 h-4" />
-                      Code Source
-                    </a>
-                  )}
-                </div>
+    <section id="projects" className="section-shell">
+      <div className="section-intro">
+        <span className="section-eyebrow">Projets</span>
+        <h2 className="section-title">Des projets qui prouvent ma capacite a travailler sur la Data et le logiciel</h2>
+        <p className="section-copy">
+          Je mets d abord en avant les projets Data / IA pour montrer mon interet pour l analyse de donnees, le machine
+          learning et l experimentation, puis les projets logiciels pour illustrer ma capacite a concevoir des
+          applications web, mobiles et des outils utiles.
+        </p>
+      </div>
+
+      <div className="space-y-16">
+        {orderedCategories.map((category) => (
+          <section key={category}>
+            <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+              <div>
+                <span className="pill-muted">{category === 'Data / IA' ? 'Priorite recruteur' : 'Complement logiciel'}</span>
+                <h3 className="mt-4 text-3xl font-semibold text-ink">{category}</h3>
               </div>
+              <p className="max-w-2xl text-sm leading-7 text-muted">{categoryCopy[category] ?? ''}</p>
             </div>
-          ))}
-        </div>
+
+            <div className="grid gap-6 lg:grid-cols-2">
+              {[...groupedProjects[category]].sort((a, b) => a.order_index - b.order_index).map((project) => (
+                <article key={project.id} className="editorial-card flex h-full flex-col">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <span className="pill-muted">{project.category}</span>
+                      <h4 className="mt-4 text-3xl font-semibold text-ink">{project.title}</h4>
+                    </div>
+                    <div className="flex h-14 w-14 items-center justify-center rounded-[1.25rem] bg-[#1f2430] text-lg font-semibold text-white">
+                      {project.title.slice(0, 2).toUpperCase()}
+                    </div>
+                  </div>
+
+                  <div className="mt-6 space-y-4 text-sm leading-7 text-muted">
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent">Description</p>
+                      <p className="mt-2">{project.description}</p>
+                    </div>
+
+                    <div className="rounded-[1.5rem] border border-slate-900/10 bg-white/60 p-4">
+                      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent">Objectif du projet</p>
+                      <p className="mt-2">{project.objective}</p>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 flex flex-wrap gap-2">
+                    {project.technologies.map((technology) => (
+                      <span key={technology} className="pill">
+                        {technology}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="mt-8 flex flex-wrap gap-4">
+                    {project.demo_url && (
+                      <a
+                        href={project.demo_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="button-primary"
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                        Demo live
+                      </a>
+                    )}
+
+                    {project.github_url && (
+                      <a
+                        href={project.github_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="button-secondary"
+                      >
+                        <Github className="h-4 w-4" />
+                        Code source
+                      </a>
+                    )}
+
+                    {!project.demo_url && !project.github_url && <span className="pill-muted">Code ou demo sur demande</span>}
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        ))}
       </div>
     </section>
   );

@@ -1,52 +1,32 @@
 import { useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import {
-  Profile,
-  Skill,
-  Project,
-  Experience as ExperienceType,
-  Education as EducationType,
-  Motivation,
-  FutureProjects
-} from './lib/supabase';
-import data from './data';
-
-interface LocalData {
-  personal: {
-    firstname: string;
-    lastname: string;
-    title: string;
-    email: string;
-    phone: string;
-    location: string;
-    github: string;
-    linkedin: string;
-  };
-  skills: Record<string, string[]>;
-  projects: Array<{
-    name: string;
-    description: string;
-    stack?: string[];
-  }>;
-  experience: Array<{
-    company: string;
-    role: string;
-    period: string;
-    tasks?: string[];
-  }>;
-  education: Array<{
-    school: string;
-    degree: string;
-    year?: string;
-  }>;
-}
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 import Navigation from './components/Navigation';
-import HomePage from './pages/HomePage';
-import FutureProjectsMotivationPage from './pages/FutureProjectsMotivationPage';
-import SkillsPage from './pages/SkillsPage';
-import ProjectsPage from './pages/ProjectsPage';
-import ExperiencePage from './pages/ExperiencePage';
+import data from './data';
+import type {
+  Education as EducationType,
+  Experience as ExperienceType,
+  FutureProjects,
+  Motivation,
+  Profile,
+  Project,
+  Skill,
+} from './lib/portfolio';
 import ContactPage from './pages/ContactPage';
+import ExperiencePage from './pages/ExperiencePage';
+import FutureProjectsMotivationPage from './pages/FutureProjectsMotivationPage';
+import HomePage from './pages/HomePage';
+import ProjectsPage from './pages/ProjectsPage';
+import SkillsPage from './pages/SkillsPage';
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [pathname]);
+
+  return null;
+}
 
 function App() {
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -64,153 +44,162 @@ function App() {
 
   async function fetchData() {
     try {
-      // map profile
-      const p = (data as any).personal;
-      const profileObj: Profile = {
+      const personal = data.personal;
+      const fullName = `${personal.firstname} ${personal.lastname}`
+        .split(' ')
+        .filter(Boolean)
+        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+        .join(' ');
+
+      setProfile({
         id: 'local',
-        full_name: `${p.firstname} ${p.lastname}`,
-        title: p.title,
-        bio: '',
-        email: p.email,
-        phone: p.phone,
-        location: p.location,
-        avatar_url: '',
-        github_url: p.github,
-        linkedin_url: p.linkedin,
+        full_name: fullName,
+        title: personal.title,
+        bio: 'bio' in personal ? String(personal.bio ?? '') : '',
+        email: personal.email,
+        phone: personal.phone,
+        location: personal.location,
+        avatar_url: 'avatar_url' in personal ? String(personal.avatar_url ?? '') : '',
+        resume_url: 'resume_url' in personal ? String(personal.resume_url ?? '') : '',
+        github_url: personal.github,
+        linkedin_url: personal.linkedin,
         twitter_url: '',
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
-      };
-      setProfile(profileObj);
+      });
 
-      // map skills
-      const skillsArr: Skill[] = [];
-      let order = 1;
-      const catmap: Record<string, string> = {
-        web: 'Web',
-        programming: 'Programming',
+      const categoryMap: Record<string, string> = {
+        data: 'Data',
+        development: 'Development',
         mobile: 'Mobile',
-        databases: 'Databases',
-        systems: 'Systems',
+        systems: 'Systems / Networks',
         design: 'Design',
       };
-      Object.entries((data as any).skills).forEach(([k, arr]: any) => {
-        const category = catmap[k] || k;
-        (arr as string[]).forEach((name: string, idx: number) => {
-          skillsArr.push({
-            id: `${k}-${idx}`,
-            name,
-            category,
+
+      let orderIndex = 1;
+      const skillsList: Skill[] = [];
+      Object.entries(data.skills).forEach(([key, entries]) => {
+        entries.forEach((entry, index) => {
+          skillsList.push({
+            id: `${key}-${index}`,
+            name: entry,
+            category: categoryMap[key] || key,
             level: 70,
             icon: '',
-            order_index: order++,
+            order_index: orderIndex++,
             created_at: new Date().toISOString(),
           });
         });
       });
-      setSkills(skillsArr);
+      setSkills(skillsList);
 
-      // map projects
-      const projectsArr: Project[] = (data as any).projects.map((p: any, idx: number) => ({
-        id: `proj-${idx}`,
-        title: p.name,
-        description: p.description,
-        long_description: '',
-        image_url: '',
-        demo_url: '',
-        github_url: '',
-        technologies: p.stack || [],
-        featured: false,
-        order_index: idx,
-        created_at: new Date().toISOString(),
-      }));
-      setProjects(projectsArr);
+      setProjects(
+        data.projects.map((project, index) => ({
+          id: `proj-${index}`,
+          title: project.name,
+          category: project.category,
+          description: project.description,
+          objective: project.objective,
+          long_description: '',
+          image_url: '',
+          demo_url: '',
+          github_url: '',
+          technologies: project.stack || [],
+          featured: false,
+          order_index: index,
+          created_at: new Date().toISOString(),
+        }))
+      );
 
-      // map experience
       function parsePeriod(period: string) {
         const lower = period.toLowerCase();
-        const parts = period.split('-').map((s) => s.trim());
-        const isCurrent = lower.includes("aujourd") || lower.includes('aujour');
-        let start = null;
-        let end = null;
+        const parts = period.split('-').map((value) => value.trim());
+        const isCurrent = lower.includes("aujourd'hui") || lower.includes('aujour');
+        let start: string | null = null;
+        let end: string | null = null;
+
         if (parts.length >= 1) {
-          const m = parts[0].replace(/\s/g, '');
-          const [mm, yy] = m.split('/');
-          if (yy && mm) start = `${yy.length === 2 ? '20' + yy : yy}-${mm.padStart(2, '0')}-01`;
+          const normalized = parts[0].replace(/\s/g, '');
+          const [month, year] = normalized.split('/');
+          if (year && month) {
+            start = `${year.length === 2 ? `20${year}` : year}-${month.padStart(2, '0')}-01`;
+          }
         }
-        if (isCurrent) end = null;
-        else if (parts.length >= 2) {
-          const m = parts[1].replace(/\s/g, '');
-          const [mm, yy] = m.split('/');
-          if (yy && mm) end = `${yy.length === 2 ? '20' + yy : yy}-${mm.padStart(2, '0')}-01`;
+
+        if (!isCurrent && parts.length >= 2) {
+          const normalized = parts[1].replace(/\s/g, '');
+          const [month, year] = normalized.split('/');
+          if (year && month) {
+            end = `${year.length === 2 ? `20${year}` : year}-${month.padStart(2, '0')}-01`;
+          }
         }
+
         return { start, end, isCurrent };
       }
 
-      const expArr: ExperienceType[] = (data as any).experience.map((e: any, idx: number) => {
-        const { start, end, isCurrent } = parsePeriod(e.period);
-        return {
-          id: `exp-${idx}`,
-          company: e.company,
-          position: e.role,
-          description: (e.tasks || []).join('\n'),
-          location: '',
-          start_date: start || new Date().toISOString(),
-          end_date: end,
-          is_current: !!isCurrent,
-          order_index: idx,
-          created_at: new Date().toISOString(),
-        } as ExperienceType;
-      });
-      setExperience(expArr);
+      setExperience(
+        data.experience.map((item, index) => {
+          const { start, end, isCurrent } = parsePeriod(item.period);
+          return {
+            id: `exp-${index}`,
+            company: item.company,
+            position: item.role,
+            description: (item.tasks || []).join('\n'),
+            location: '',
+            start_date: start || new Date().toISOString(),
+            end_date: end,
+            is_current: isCurrent,
+            order_index: index,
+            created_at: new Date().toISOString(),
+          };
+        })
+      );
 
-      // map education
-      const eduArr: EducationType[] = (data as any).education.map((ed: any, idx: number) => {
-        const years = (ed.year || '').split('-').map((s: string) => s.trim());
-        const start = years[0] ? `${years[0]}-09-01` : new Date().toISOString();
-        const end = years[1] ? `${years[1]}-06-30` : null;
-        return {
-          id: `edu-${idx}`,
-          institution: ed.school,
-          degree: ed.degree,
-          field: '',
-          location: '',
-          start_date: start,
-          end_date: end,
-          is_current: false,
-          description: '',
-          order_index: idx,
-          created_at: new Date().toISOString(),
-        } as EducationType;
-      });
-      setEducation(eduArr);
+      setEducation(
+        data.education.map((item, index) => {
+          const years = (item.year || '').split('-').map((value) => value.trim());
+          return {
+            id: `edu-${index}`,
+            institution: item.school,
+            degree: item.degree,
+            field: '',
+            location: '',
+            start_date: years[0] ? `${years[0]}-09-01` : new Date().toISOString(),
+            end_date: years[1] ? `${years[1]}-06-30` : null,
+            is_current: false,
+            description: '',
+            order_index: index,
+            created_at: new Date().toISOString(),
+          };
+        })
+      );
 
-      // map motivations from local data
-      const motivationsArr: Motivation[] = ((data as any).motivations || []).map((m: any, idx: number) => ({
-        id: m.id ?? `mot-${idx}`,
-        content: m.content ?? '',
-        created_at: m.created_at ?? new Date().toISOString(),
-        updated_at: m.updated_at ?? new Date().toISOString(),
-      }));
-      setMotivations(motivationsArr);
+      setMotivations(
+        (data.motivations || []).map((item, index) => ({
+          id: item.id ?? `mot-${index}`,
+          content: item.content ?? '',
+          created_at: item.created_at ?? new Date().toISOString(),
+          updated_at: item.updated_at ?? new Date().toISOString(),
+        }))
+      );
 
-      // map future projects from local data
-      const futureProjectsArr: FutureProjects[] = ((data as any).futureProjects || []).map((p: any, idx: number) => ({
-        id: p.id ?? `fproj-${idx}`,
-        title: p.title ?? p.name ?? `Project ${idx}`,
-        description: p.description ?? '',
-        long_description: p.long_description ?? '',
-        image_url: p.image_url ?? '',
-        demo_url: p.demo_url ?? '',
-        github_url: p.github_url ?? '',
-        technologies: p.technologies || p.stack || [],
-        featured: p.featured ?? false,
-        order_index: p.order_index ?? idx,
-        created_at: p.created_at ?? new Date().toISOString(),
-      }));
-      setFutureProjects(futureProjectsArr);
+      setFutureProjects(
+        (data.futureProjects || []).map((item, index) => ({
+          id: item.id ?? `fproj-${index}`,
+          title: item.title ?? `Projet ${index + 1}`,
+          description: item.description ?? '',
+          long_description: item.long_description ?? '',
+          image_url: item.image_url ?? '',
+          demo_url: item.demo_url ?? '',
+          github_url: item.github_url ?? '',
+          technologies: item.technologies || [],
+          featured: item.featured ?? false,
+          order_index: item.order_index ?? index,
+          created_at: item.created_at ?? new Date().toISOString(),
+        }))
+      );
     } catch (error) {
-      console.error('error loading local data:', error);
+      console.error('Error loading local data:', error);
     } finally {
       setLoading(false);
     }
@@ -218,10 +207,14 @@ function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-white text-xl">Loading portfolio...</p>
+      <div className="page-shell flex min-h-screen items-center justify-center px-6">
+        <div className="glass-card max-w-md rounded-[2rem] p-8 text-center">
+          <div className="mx-auto mb-6 h-14 w-14 animate-spin rounded-full border-4 border-[#d88257] border-t-transparent" />
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-accent">Chargement</p>
+          <p className="mt-3 text-2xl font-semibold text-ink">Preparation du portfolio...</p>
+          <p className="mt-3 text-sm leading-7 text-muted">
+            Mise en place des sections, des projets et de la nouvelle direction visuelle.
+          </p>
         </div>
       </div>
     );
@@ -229,14 +222,28 @@ function App() {
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Navigation />
       <Routes>
-        <Route path="/" element={<HomePage profile={profile} />} />
-        <Route path="/about" element={<FutureProjectsMotivationPage motivations={motivations} futureProjects={futureProjects} />} />
+        <Route
+          path="/"
+          element={
+            <HomePage
+              profile={profile}
+              projectCount={projects.length}
+              skillCount={skills.length}
+              experienceCount={experience.length}
+            />
+          }
+        />
+        <Route
+          path="/about"
+          element={<FutureProjectsMotivationPage motivations={motivations} futureProjects={futureProjects} />}
+        />
         <Route path="/skills" element={<SkillsPage skills={skills} />} />
         <Route path="/projects" element={<ProjectsPage projects={projects} />} />
         <Route path="/experience" element={<ExperiencePage experience={experience} education={education} />} />
-        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/contact" element={<ContactPage profile={profile} />} />
       </Routes>
     </BrowserRouter>
   );

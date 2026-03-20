@@ -1,9 +1,13 @@
-import { useState, FormEvent } from 'react';
-import { Mail, Send, CheckCircle } from 'lucide-react';
-import { ContactMessage } from '../lib/supabase';
+import { type FormEvent, useState } from 'react';
+import { CheckCircle, Github, Linkedin, Mail, MapPin, Phone, Send } from 'lucide-react';
 import emailjs from '@emailjs/browser';
+import type { ContactMessage, Profile } from '../lib/portfolio';
 
-export default function Contact() {
+interface ContactProps {
+  readonly profile: Profile | null;
+}
+
+export default function Contact({ profile }: ContactProps) {
   const [formData, setFormData] = useState<ContactMessage>({
     name: '',
     email: '',
@@ -13,13 +17,29 @@ export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+  const contactLinks = [
+    profile?.email
+      ? { href: `mailto:${profile.email}`, label: profile.email, icon: Mail, helper: 'Email' }
+      : null,
+    profile?.phone
+      ? { href: `tel:${profile.phone}`, label: profile.phone, icon: Phone, helper: 'Telephone' }
+      : null,
+    profile?.location
+      ? { href: '', label: profile.location, icon: MapPin, helper: 'Localisation' }
+      : null,
+  ].filter(Boolean);
+
+  const socials = [
+    profile?.github_url ? { href: profile.github_url, label: 'GitHub', icon: Github } : null,
+    profile?.linkedin_url ? { href: profile.linkedin_url, label: 'LinkedIn', icon: Linkedin } : null,
+  ].filter(Boolean);
+
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus('idle');
 
     try {
-      // Send email via EmailJS
       await emailjs.send(
         'service_xuchj4m',
         'template_svh2y9r',
@@ -44,107 +64,170 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-20 bg-white">
-      <div className="max-w-4xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900">
-            Contactez-moi
-          </h2>
-          <p className="text-xl text-gray-600">
-            Vous avez une question ou souhaitez collaborer ? N'hésitez pas à me contacter !
-          </p>
-        </div>
+    <section id="contact" className="section-shell">
+      <div className="section-intro">
+        <span className="section-eyebrow">Contact</span>
+        <h2 className="section-title">Disponible pour echanger autour d'une alternance, d'un projet data ou d'un besoin logiciel</h2>
+        <p className="section-copy">
+          Recruteurs, entreprises ou porteurs de projet peuvent me contacter pour discuter d'une alternance en Data
+          Science / Developpement logiciel, d'une collaboration technique ou d'un projet a construire.
+        </p>
+      </div>
 
-        <div className="bg-slate-50 rounded-2xl shadow-xl p-8 md:p-12">
+      <div className="grid gap-8 lg:grid-cols-[0.82fr_1.18fr]">
+        <aside className="editorial-card bg-mesh">
+          <span className="pill-muted">Ouvert aux echanges</span>
+          <h3 className="mt-6 text-3xl font-semibold text-ink">Parlons de ce que nous pouvons construire ensemble.</h3>
+          <p className="mt-4 text-base leading-8 text-muted">
+            Je suis disponible pour discuter d'une alternance, d'une collaboration ponctuelle ou d'un projet web a
+            structurer.
+          </p>
+
+          <div className="mt-8 space-y-4">
+            {contactLinks.map((item) => {
+              if (!item) return null;
+              const Icon = item.icon;
+
+              return item.href ? (
+                <a key={item.helper} href={item.href} className="flex items-center gap-4 rounded-[1.5rem] p-4 glass-card-soft">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-[1rem] bg-[#1f2430] text-white">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">{item.helper}</p>
+                    <p className="mt-1 text-base font-medium text-ink">{item.label}</p>
+                  </div>
+                </a>
+              ) : (
+                <div key={item.helper} className="flex items-center gap-4 rounded-[1.5rem] p-4 glass-card-soft">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-[1rem] bg-[#1f2430] text-white">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">{item.helper}</p>
+                    <p className="mt-1 text-base font-medium text-ink">{item.label}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="mt-8 flex flex-wrap gap-3">
+            {socials.map((item) => {
+              if (!item) return null;
+              const Icon = item.icon;
+
+              return (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="pill hover:-translate-y-0.5 hover:bg-white/85"
+                >
+                  <Icon className="h-4 w-4 text-accent" />
+                  {item.label}
+                </a>
+              );
+            })}
+          </div>
+        </aside>
+
+        <div className="editorial-card">
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid gap-6 md:grid-cols-2">
               <div>
-                <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label htmlFor="name" className="field-label">
                   Nom
                 </label>
                 <input
-                  type="text"
                   id="name"
+                  type="text"
                   required
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 outline-none"
+                  onChange={(event) => setFormData({ ...formData, name: event.target.value })}
+                  className="field-input"
                   placeholder="Votre nom"
                 />
               </div>
+
               <div>
-                <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label htmlFor="email" className="field-label">
                   Email
                 </label>
                 <input
-                  type="email"
                   id="email"
+                  type="email"
                   required
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 outline-none"
-                  placeholder="votre.email@example.com"
+                  onChange={(event) => setFormData({ ...formData, email: event.target.value })}
+                  className="field-input"
+                  placeholder="vous@example.com"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="subject" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label htmlFor="subject" className="field-label">
                 Sujet
               </label>
               <input
-                type="text"
                 id="subject"
+                type="text"
                 required
                 value={formData.subject}
-                onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 outline-none"
-                placeholder="De quoi s'agit-il ?"
+                onChange={(event) => setFormData({ ...formData, subject: event.target.value })}
+                className="field-input"
+                placeholder="Mission, alternance, projet..."
               />
             </div>
 
             <div>
-              <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label htmlFor="message" className="field-label">
                 Message
               </label>
               <textarea
                 id="message"
                 required
-                rows={6}
+                rows={7}
                 value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 outline-none resize-none"
-                placeholder="Votre message..."
+                onChange={(event) => setFormData({ ...formData, message: event.target.value })}
+                className="field-input resize-none"
+                placeholder="Expliquez votre besoin, votre contexte ou votre idee."
               />
             </div>
 
             {submitStatus === 'success' && (
-              <div className="flex items-center gap-2 text-green-600 bg-green-50 p-4 rounded-lg">
-                <CheckCircle className="w-5 h-5" />
-                <span className="font-medium">Message envoyé avec succès !</span>
+              <div className="rounded-[1.5rem] border border-emerald-200 bg-emerald-50 p-4 text-emerald-700">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5" />
+                  <span className="font-medium">Message envoye avec succes.</span>
+                </div>
               </div>
             )}
 
             {submitStatus === 'error' && (
-              <div className="flex items-center gap-2 text-red-600 bg-red-50 p-4 rounded-lg">
-                <Mail className="w-5 h-5" />
-                <span className="font-medium">Échec de l'envoi du message. Veuillez réessayer.</span>
+              <div className="rounded-[1.5rem] border border-rose-200 bg-rose-50 p-4 text-rose-700">
+                <div className="flex items-center gap-2">
+                  <Mail className="h-5 w-5" />
+                  <span className="font-medium">Une erreur est survenue. Merci de reessayer.</span>
+                </div>
               </div>
             )}
 
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full md:w-auto px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              className="button-primary w-full disabled:cursor-not-allowed disabled:opacity-60 md:w-auto"
             >
               {isSubmitting ? (
                 <>
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  Envoi en cours...
+                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                  Envoi en cours
                 </>
               ) : (
                 <>
-                  <Send className="w-5 h-5" />
+                  <Send className="h-5 w-5" />
                   Envoyer le message
                 </>
               )}

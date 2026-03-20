@@ -1,16 +1,26 @@
-import Hero from '../components/Hero';
 import Footer from '../components/Footer';
-import { Profile } from '../lib/supabase';
+import Hero from '../components/Hero';
+import RecruiterFocus from '../components/RecruiterFocus';
+import type { Profile } from '../lib/portfolio';
 
 interface HomePageProps {
   readonly profile: Profile | null;
+  readonly projectCount: number;
+  readonly skillCount: number;
+  readonly experienceCount: number;
 }
 
-export default function HomePage({ profile }: HomePageProps) {
+export default function HomePage({ profile, projectCount, skillCount, experienceCount }: HomePageProps) {
   return (
-    <div className="min-h-screen bg-white">
-      <Hero profile={profile} />
+    <main className="page-shell">
+      <Hero
+        profile={profile}
+        projectCount={projectCount}
+        skillCount={skillCount}
+        experienceCount={experienceCount}
+      />
+      <RecruiterFocus />
       <Footer />
-    </div>
+    </main>
   );
 }

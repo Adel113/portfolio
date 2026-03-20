@@ -1,17 +1,17 @@
 import Experience from '../components/Experience';
 import Footer from '../components/Footer';
-import { Experience as ExperienceType, Education as EducationType } from '../lib/supabase';
+import type { Education as EducationType, Experience as ExperienceType } from '../lib/portfolio';
 
 interface ExperiencePageProps {
-  experience: ExperienceType[];
-  education: EducationType[];
+  readonly experience: ExperienceType[];
+  readonly education: EducationType[];
 }
 
 export default function ExperiencePage({ experience, education }: ExperiencePageProps) {
   return (
-    <div className="min-h-screen bg-white pt-20">
+    <main className="page-shell pt-20">
       <Experience experience={experience} education={education} />
       <Footer />
-    </div>
+    </main>
   );
 }

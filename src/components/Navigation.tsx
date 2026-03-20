@@ -1,59 +1,89 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
+
+const navItems = [
+  { label: 'Accueil', to: '/' },
+  { label: 'Vision', to: '/about' },
+  { label: 'Competences', to: '/skills' },
+  { label: 'Projets', to: '/projects' },
+  { label: 'Parcours', to: '/experience' },
+  { label: 'Contact', to: '/contact' },
+];
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
 
-  const navItems = [
-    { label: 'Accueil', to: '/' },
-    { label: 'Projets Futurs & Motivation', to: '/about' },
-    { label: 'Compétences', to: '/skills' },
-    { label: 'Projets', to: '/projects' },
-    { label: 'Expérience', to: '/experience' },
-    { label: 'Contact', to: '/contact' },
-  ];
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-sm shadow-lg transition-all duration-300">
-      <div className="max-w-7xl mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
-          <Link to="/" className="text-2xl font-bold text-white">
-            Portfolio
+    <nav className="fixed inset-x-0 top-0 z-50 px-4 pt-4 md:px-6">
+      <div className="mx-auto max-w-7xl rounded-full px-4 py-3 glass-card-soft md:px-6">
+        <div className="flex items-center justify-between gap-4">
+          <Link to="/" className="flex items-center gap-3">
+            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#1f2430] text-sm font-bold uppercase tracking-[0.24em] text-white">
+              AS
+            </span>
+            <span>
+              <span className="block text-[11px] font-semibold uppercase tracking-[0.28em] text-accent">
+                Portfolio
+              </span>
+              <span className="block text-sm font-medium text-ink">Adel Sidi Ahmed</span>
+            </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden items-center gap-2 md:flex">
             {navItems.map((item) => (
-              <Link
+              <NavLink
                 key={item.to}
                 to={item.to}
-                className="text-gray-300 hover:text-white transition-colors duration-300 font-medium"
+                className={({ isActive }) =>
+                  [
+                    'rounded-full px-4 py-2 text-sm font-medium transition-all duration-300',
+                    isActive
+                      ? 'bg-[#1f2430] text-white shadow-lg'
+                      : 'text-slate-600 hover:bg-white/70 hover:text-slate-900',
+                  ].join(' ')
+                }
               >
                 {item.label}
-              </Link>
+              </NavLink>
             ))}
           </div>
 
           <button
-            className="md:hidden text-white"
-            onClick={() => setIsOpen(!isOpen)}
+            type="button"
+            aria-label={isOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+            onClick={() => setIsOpen((value) => !value)}
+            className="flex h-11 w-11 items-center justify-center rounded-full bg-[#1f2430] text-white transition-transform duration-300 hover:scale-105 md:hidden"
           >
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
 
         {isOpen && (
-          <div className="md:hidden mt-4 pb-4 space-y-4">
-            {navItems.map((item) => (
-              <Link
-                key={item.to}
-                to={item.to}
-                className="block text-gray-300 hover:text-white transition-colors duration-300"
-                onClick={() => setIsOpen(false)}
-              >
-                {item.label}
-              </Link>
-            ))}
+          <div className="mt-4 rounded-[2rem] p-4 glass-card-soft md:hidden">
+            <div className="flex flex-col gap-2">
+              {navItems.map((item) => (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  className={({ isActive }) =>
+                    [
+                      'rounded-2xl px-4 py-3 text-sm font-medium transition-all duration-300',
+                      isActive
+                        ? 'bg-[#1f2430] text-white shadow-lg'
+                        : 'text-slate-600 hover:bg-white/80 hover:text-slate-900',
+                    ].join(' ')
+                  }
+                >
+                  {item.label}
+                </NavLink>
+              ))}
+            </div>
           </div>
         )}
       </div>

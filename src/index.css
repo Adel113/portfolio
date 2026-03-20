@@ -1,3 +1,236 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+    --bg: #f4ebe1;
+    --bg-secondary: #fbf5ef;
+    --surface: rgba(255, 251, 245, 0.78);
+    --surface-strong: rgba(255, 255, 255, 0.92);
+    --ink: #1f2430;
+    --muted: #655f58;
+    --line: rgba(31, 36, 48, 0.08);
+    --accent: #c96a3c;
+    --accent-strong: #8b3a19;
+    --sage: #2f6b63;
+    --shadow: 0 24px 70px rgba(112, 68, 35, 0.16);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply antialiased;
+    margin: 0;
+    min-width: 320px;
+    color: var(--ink);
+    font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+    background:
+      radial-gradient(circle at top left, rgba(201, 106, 60, 0.16), transparent 34%),
+      radial-gradient(circle at top right, rgba(47, 107, 99, 0.12), transparent 28%),
+      linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg) 100%);
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.26) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.18) 1px, transparent 1px);
+    background-size: 32px 32px;
+    mask-image: radial-gradient(circle at center, black 38%, transparent 85%);
+    opacity: 0.34;
+    z-index: -1;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Fraunces', Georgia, serif;
+    letter-spacing: -0.04em;
+  }
+
+  p {
+    color: var(--muted);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  ::selection {
+    background: rgba(201, 106, 60, 0.22);
+    color: var(--ink);
+  }
+}
+
+@layer components {
+  .page-shell {
+    @apply relative min-h-screen overflow-hidden;
+  }
+
+  .page-shell::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 15% 18%, rgba(201, 106, 60, 0.12), transparent 20%),
+      radial-gradient(circle at 82% 14%, rgba(47, 107, 99, 0.12), transparent 18%),
+      radial-gradient(circle at 50% 92%, rgba(201, 106, 60, 0.1), transparent 24%);
+    z-index: 0;
+  }
+
+  .section-shell {
+    @apply relative mx-auto max-w-6xl px-6 py-24;
+    z-index: 1;
+  }
+
+  .section-intro {
+    @apply mx-auto mb-16 max-w-3xl text-center;
+  }
+
+  .section-eyebrow {
+    @apply mb-5 inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em];
+    background: rgba(255, 251, 245, 0.72);
+    border: 1px solid var(--line);
+    color: var(--accent-strong);
+    box-shadow: 0 14px 35px rgba(112, 68, 35, 0.1);
+    backdrop-filter: blur(14px);
+  }
+
+  .section-title {
+    @apply text-4xl font-semibold md:text-6xl;
+    color: var(--ink);
+  }
+
+  .section-copy {
+    @apply mt-5 text-base leading-8 md:text-lg;
+    color: var(--muted);
+  }
+
+  .glass-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(18px);
+  }
+
+  .glass-card-soft {
+    background: rgba(255, 255, 255, 0.58);
+    border: 1px solid var(--line);
+    box-shadow: 0 16px 50px rgba(112, 68, 35, 0.08);
+    backdrop-filter: blur(14px);
+  }
+
+  .pill {
+    @apply inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium;
+    background: rgba(255, 255, 255, 0.68);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    backdrop-filter: blur(12px);
+  }
+
+  .pill-muted {
+    @apply inline-flex items-center rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em];
+    background: rgba(47, 107, 99, 0.1);
+    color: var(--sage);
+  }
+
+  .button-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5;
+    background: linear-gradient(135deg, var(--accent) 0%, #dd8c5e 100%);
+    color: white;
+    box-shadow: 0 18px 40px rgba(201, 106, 60, 0.28);
+  }
+
+  .button-primary:hover {
+    box-shadow: 0 24px 50px rgba(201, 106, 60, 0.34);
+  }
+
+  .button-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5;
+    background: rgba(255, 255, 255, 0.72);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    box-shadow: 0 16px 36px rgba(31, 36, 48, 0.08);
+    backdrop-filter: blur(14px);
+  }
+
+  .editorial-card {
+    @apply rounded-[2rem] p-7 transition-all duration-300 hover:-translate-y-1;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 251, 245, 0.78) 100%);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+  }
+
+  .stat-card {
+    @apply rounded-[1.75rem] p-5;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid var(--line);
+    box-shadow: 0 18px 45px rgba(31, 36, 48, 0.08);
+    backdrop-filter: blur(14px);
+  }
+
+  .field-label {
+    @apply mb-2 block text-sm font-semibold tracking-wide;
+    color: var(--ink);
+  }
+
+  .field-input {
+    @apply w-full rounded-[1.25rem] px-4 py-3.5 outline-none transition-all duration-300;
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(31, 36, 48, 0.12);
+    color: var(--ink);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+
+  .field-input::placeholder {
+    color: rgba(101, 95, 88, 0.8);
+  }
+
+  .field-input:focus {
+    border-color: rgba(201, 106, 60, 0.5);
+    box-shadow:
+      0 0 0 4px rgba(201, 106, 60, 0.14),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.92);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .bg-mesh {
+    background:
+      radial-gradient(circle at top left, rgba(201, 106, 60, 0.16), transparent 28%),
+      linear-gradient(160deg, rgba(255, 255, 255, 0.9), rgba(255, 251, 245, 0.82));
+  }
+
+  .text-ink {
+    color: var(--ink);
+  }
+
+  .text-muted {
+    color: var(--muted);
+  }
+
+  .text-accent {
+    color: var(--accent-strong);
+  }
+
+  .shadow-elevated {
+    box-shadow: 0 24px 60px rgba(112, 68, 35, 0.16);
+  }
+}
