@@ -3,9 +3,9 @@ const data = {
     firstname: 'Adel',
     lastname: 'Sidi Ahmed',
     title:
-      "Futur étudiant en M2 Informatique & Big Data | Recherche d'une alternance en Data Science / Developpement logiciel (2026-2027)",
+      "Data Engineer / ML en formation | Python · Data · Détection de défauts | Alternance sept. 2026",
     bio:
-      "Étudiant en informatique, je construis un profil oriente data science, machine learning et developpement logiciel. Mon objectif est de rejoindre une equipe ou je peux analyser la donnee, developper des solutions utiles et contribuer a des projets techniques concrets.",
+      "Étudiant en informatique spécialisé en data et machine learning, je développe des compétences en analyse de données et en conception de solutions techniques, avec un fort intérêt pour l’intelligence artificielle. Mon objectif est de rejoindre une équipe pour contribuer à des projets concrets à fort impact.",
     email: 'adelsidiahmed2020@gmail.com',
     phone: '0761535757',
     location: 'Colombes 92700',
@@ -41,8 +41,8 @@ const data = {
       company: 'TREALIS',
       period: '04/2026 - 07/2026',
       tasks: [
-        'labellisation de donnees, machine learning, analyse et comparaison de modeles',
-        'detection automatique de defauts ferroviaires a partir de signaux d accelerometrie',
+        'Traitement et labellisation de données d’accélérométrie et d’images issues de capteurs ferroviaires, avec extraction et préparation des données',
+        'Conception et mise en place d’un pipeline de traitement de données en Python pour la détection de défauts',
       ],
     },
     {

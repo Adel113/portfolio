@@ -8,8 +8,7 @@ export default function Footer() {
             <p className="mt-2 text-lg font-medium text-ink">Adel Sidi Ahmed</p>
           </div>
           <p className="max-w-xl text-sm leading-7 text-muted">
-            Portfolio concu pour presenter clairement mon parcours, mes projets Data / IA et mes competences en
-            developpement logiciel dans le cadre de ma recherche d alternance.
+            Portfolio concu pour presenter clairement mon parcours, mes projets Data / IA dans le cadre de ma recherche d'alternance.
           </p>
         </div>
 
