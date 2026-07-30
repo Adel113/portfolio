@@ -166,54 +166,7 @@ const data = {
     },
   ],
 
-  skills: {
-    frontend: [
-      'React',
-      'Next.js',
-      'JavaScript',
-      'TypeScript',
-      'TailwindCSS',
-    ],
-
-    backend: [
-      'Node.js',
-      'Python',
-      'Java',
-      'C',
-      'C++',
-      'Firebase',
-      'Supabase',
-      'SQL',
-      'MySQL',
-    ],
-
-    ai: [
-      'Machine Learning',
-      'Deep Learning',
-      'CNN',
-      'BLIP',
-      'Computer Vision',
-      'Analyse de données',
-      'Streamlit',
-    ],
-
-    mobile: [
-      'Kotlin',
-      'Swift',
-    ],
-
-    tools: [
-      'Git',
-      'Linux',
-      'WordPress',
-      'Figma',
-      'Photoshop',
-      'Illustrator',
-      'Canva',
-      'TCP/IP',
-      'CCNA',
-    ],
-  },
+ skills: { data: ['python', 'sql', 'mysql', 'machine learning', 'analyse de donnees', 'cnn', 'blip', 'streamlit'], development: ['javascript', 'typescript', 'react', 'nextjs', 'tailwindcss', 'wordpress', 'java', 'c', 'c++'], mobile: ['kotlin', 'swift'], systems: ['linux', 'tcp ip', 'ccna 1 2 3', 'firebase', 'supabase'], design: ['figma', 'photoshop', 'illustrator', 'canva'], },
 
   motivations: [
     {
