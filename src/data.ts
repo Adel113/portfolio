@@ -3,9 +3,9 @@ const data = {
     firstname: 'Adel',
     lastname: 'Sidi Ahmed',
     title:
-      "Data Engineer / ML en formation | Python · Data · Détection de défauts | Alternance sept. 2026",
+      'Développeur Full Stack • IA • Data | Étudiant en M2 Informatique (THYP) | Alternance 2026–2027',
     bio:
-      "Étudiant en informatique spécialisé en data et machine learning, je développe des compétences en analyse de données et en conception de solutions techniques, avec un fort intérêt pour l’intelligence artificielle. Mon objectif est de rejoindre une équipe pour contribuer à des projets concrets à fort impact.",
+      "Étudiant en Master 2 Informatique, je développe des applications web modernes et des solutions intégrant l'intelligence artificielle. J'interviens sur l'ensemble du cycle de développement, du front-end au back-end, tout en exploitant les données et les modèles de machine learning pour concevoir des applications intelligentes, performantes et utiles. Je recherche une alternance afin de contribuer à des projets innovants mêlant développement logiciel, IA et data.",
     email: 'adelsidiahmed2020@gmail.com',
     phone: '0761535757',
     location: 'Colombes 92700',
@@ -19,13 +19,18 @@ const data = {
 
   education: [
     {
-      degree: 'Master 1 Informatique et Big Data',
-      school: 'Universite Paris 8',
+      degree: 'Master 2 Informatique (THYP)',
+      school: 'Université Paris 8',
+      year: '2026-2027',
+    },
+    {
+      degree: 'Master 1 Informatique & Big Data',
+      school: 'Université Paris 8',
       year: '2025-2026',
     },
     {
-      degree: 'Licence 3 Informatique des Systemes Embarques',
-      school: 'Universite Paris 8',
+      degree: 'Licence 3 Informatique des Systèmes Embarqués',
+      school: 'Université Paris 8',
       year: '2024-2025',
     },
     {
@@ -41,129 +46,180 @@ const data = {
       company: 'TREALIS',
       period: '04/2026 - 07/2026',
       tasks: [
-        'Traitement et labellisation de données d’accélérométrie et d’images issues de capteurs ferroviaires, avec extraction et préparation des données',
-        'Conception et mise en place d’un pipeline de traitement de données en Python pour la détection de défauts',
+        "Traitement et labellisation de données d'accélérométrie et d'images issues de capteurs ferroviaires.",
+        'Développement de pipelines de traitement de données en Python.',
+        "Conception d'algorithmes de détection automatique de défauts.",
+        "Participation au développement de solutions d'intelligence artificielle appliquées au domaine ferroviaire.",
       ],
     },
     {
-      role: 'Developpeur Web Freelance',
+      role: 'Développeur Web Freelance',
       company: 'Freelance',
-      period: '12/2024 - aujourd hui',
+      period: "12/2024 - Aujourd'hui",
       tasks: [
-        'traduction des besoins clients en solutions web sur mesure',
-        'developpement et personnalisation de sites web et wordpress',
-        'mise en ligne, maintenance et amelioration continue',
+        'Conception de sites web sur mesure.',
+        'Développement front-end et back-end.',
+        'Personnalisation de sites WordPress.',
+        'Maintenance, optimisation et déploiement.',
       ],
     },
     {
-      role: 'Developpeur Web - Stage',
+      role: 'Développeur Web - Stage',
       company: "Sister's Lille",
       period: '05/2025 - 07/2025',
       tasks: [
-        'optimisation et mise a jour de sites web',
-        'support technique et propositions d amelioration',
-        'maintenance corrective et evolutive',
+        'Optimisation et évolution de sites web.',
+        'Maintenance corrective et évolutive.',
+        'Support technique.',
       ],
     },
     {
-      role: 'Developpeur Front-End - Stage',
+      role: 'Développeur Front-End - Stage',
       company: 'LOU',
       period: '05/2024 - 07/2024',
       tasks: [
-        'developpement de sites vitrines',
-        'integration wordpress et respect des bonnes pratiques web',
+        'Développement de sites vitrines.',
+        'Intégration WordPress.',
+        'Optimisation des interfaces utilisateurs.',
       ],
     },
     {
-      role: 'Developpeur Web - Stage',
+      role: 'Développeur Web - Stage',
       company: 'Arshman Paris',
       period: '06/2023 - 08/2023',
       tasks: [
-        'creation et refonte de sites web',
-        'travail sur le front end et le back end',
+        'Création et refonte de sites web.',
+        'Développement front-end et back-end.',
       ],
     },
   ],
 
   projects: [
     {
-      name: 'Agent IA Workflow Automatise',
-      category: 'Data / IA',
-      stack: ['node.js', 'extraction IA', 'gmail', 'generation PDF'],
+      name: 'Agent IA Workflow Automatisé',
+      category: 'IA & Automatisation',
+      stack: ['Node.js', 'IA', 'Gmail API', 'PDF'],
       description:
-        "application d'automatisation documentaire avec extraction intelligente d'informations, validation metier, integration Gmail et generation de PDF.",
+        "Application d'automatisation documentaire intégrant l'extraction intelligente d'informations, la validation métier et la génération automatique de documents.",
       objective:
-        "concevoir un workflow automatise capable de traiter des documents, fiabiliser les etapes de validation et accelerer la production de livrables metier.",
+        'Créer un agent IA capable de traiter automatiquement des documents et de réduire les tâches répétitives.',
     },
+
     {
-      name: "Application de description d'images",
-      category: 'Data / IA',
-      stack: ['python', 'cnn', 'blip', 'streamlit'],
+      name: 'Générateur de Factures PDF',
+      category: 'Full Stack',
+      stack: ['TypeScript', 'Vite', 'TailwindCSS', 'Supabase'],
       description:
-        "application de vision par ordinateur capable d'analyser une image et de generer automatiquement une description textuelle.",
+        'Application web permettant de créer, gérer et exporter des factures professionnelles.',
       objective:
-        "tester un pipeline d'IA applique a l'analyse d'image et comprendre l'integration d'un modele de deep learning dans une interface exploitable.",
+        'Développer une application métier robuste avec une architecture moderne.',
     },
+
     {
-      name: 'Generateur de factures PDF',
-      category: 'Developpement logiciel / web / mobile',
-      stack: ['typescript', 'vite', 'tailwindcss', 'supabase'],
+      name: "Application de Description d'Images",
+      category: 'Vision par ordinateur',
+      stack: ['Python', 'CNN', 'BLIP', 'Streamlit'],
       description:
-        'application web permettant de creer, structurer et exporter des factures PDF avec une interface claire et maintenable.',
+        "Application capable d'analyser une image et de générer automatiquement une description textuelle grâce à l'intelligence artificielle.",
       objective:
-        'concevoir un outil metier fiable, avec une logique de generation de documents et une architecture front-end propre.',
+        'Explorer les modèles de vision par ordinateur et leur intégration dans une application.',
     },
+
     {
       name: 'FormationV2Pro',
-      category: 'Developpement logiciel / web / mobile',
-      stack: ['react', 'vite', 'tailwindcss', 'firebase'],
+      category: 'Application Web',
+      stack: ['React', 'Firebase', 'TailwindCSS'],
       description:
-        'plateforme de formation en ligne dynamique, responsive et connectee a Firebase.',
+        "Plateforme d'apprentissage en ligne moderne avec authentification et gestion de contenu.",
       objective:
-        "developper une application web orientee utilisateur, avec gestion de contenu, navigation fluide et architecture reactive.",
+        "Créer une plateforme performante orientée expérience utilisateur.",
     },
+
     {
       name: 'FitnessApp',
-      category: 'Developpement logiciel / web / mobile',
-      stack: ['kotlin', 'firebase', 'api temps reel'],
+      category: 'Application Mobile',
+      stack: ['Kotlin', 'Firebase'],
       description:
-        'application mobile destinee aux sportifs pour suivre leurs activites et exploiter des donnees en temps reel.',
+        "Application mobile permettant le suivi d'activités sportives et de données en temps réel.",
       objective:
-        'creer une experience mobile utile, connectee a des services temps reel et orientee suivi de performance.',
+        'Concevoir une application mobile intuitive pour les sportifs.',
     },
+
     {
-      name: 'Simulation de systeme automatise',
-      category: 'Developpement logiciel / web / mobile',
-      stack: ['python', 'ros', 'gazebo'],
+      name: 'Application de Prédiction Crypto',
+      category: 'Machine Learning',
+      stack: ['Python', 'Machine Learning'],
       description:
-        "simulation sous ROS et Gazebo d'un systeme automatise developpe en Python.",
+        'Analyse de données financières et prédiction de tendances du marché des cryptomonnaies.',
       objective:
-        'modeliser et tester le comportement d un systeme complexe dans un environnement de simulation technique.',
+        "Comparer différents modèles de prédiction sur des données réelles.",
     },
+
     {
-      name: 'Application de prediction crypto',
-      category: 'Data / IA',
-      stack: ['python', 'machine learning', 'api crypto'],
+      name: 'Simulation de Système Automatisé',
+      category: 'Robotique',
+      stack: ['Python', 'ROS', 'Gazebo'],
       description:
-        'application de collecte et d analyse de donnees crypto avec prediction de tendance via machine learning.',
+        "Simulation d'un système automatisé dans un environnement ROS/Gazebo.",
       objective:
-        "explorer l'utilisation de donnees de marche pour construire et comparer des modeles de prediction applicables.",
+        "Tester le comportement d'un système complexe dans un environnement simulé.",
     },
   ],
 
   skills: {
-    data: ['python', 'sql', 'mysql', 'machine learning', 'analyse de donnees', 'cnn', 'blip', 'streamlit'],
-    development: ['javascript', 'typescript', 'react', 'nextjs', 'tailwindcss', 'wordpress', 'java', 'c', 'c++'],
-    mobile: ['kotlin', 'swift'],
-    systems: ['linux', 'tcp ip', 'ccna 1 2 3', 'firebase', 'supabase'],
-    design: ['figma', 'photoshop', 'illustrator', 'canva'],
+    frontend: [
+      'React',
+      'Next.js',
+      'JavaScript',
+      'TypeScript',
+      'TailwindCSS',
+    ],
+
+    backend: [
+      'Node.js',
+      'Python',
+      'Java',
+      'C',
+      'C++',
+      'Firebase',
+      'Supabase',
+      'SQL',
+      'MySQL',
+    ],
+
+    ai: [
+      'Machine Learning',
+      'Deep Learning',
+      'CNN',
+      'BLIP',
+      'Computer Vision',
+      'Analyse de données',
+      'Streamlit',
+    ],
+
+    mobile: [
+      'Kotlin',
+      'Swift',
+    ],
+
+    tools: [
+      'Git',
+      'Linux',
+      'WordPress',
+      'Figma',
+      'Photoshop',
+      'Illustrator',
+      'Canva',
+      'TCP/IP',
+      'CCNA',
+    ],
   },
 
   motivations: [
     {
       id: 'mot-1',
       content:
-        'je suis motive par la creation d applications utiles, l exploitation intelligente des donnees, l apprentissage continu et la collaboration au sein d equipes pluridisciplinaires.',
+        "Je suis passionné par le développement d'applications modernes intégrant l'intelligence artificielle. J'apprécie concevoir des solutions Full Stack, automatiser des processus, exploiter les données et transformer des idées en applications concrètes à fort impact.",
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     },
@@ -172,30 +228,30 @@ const data = {
   futureProjects: [
     {
       id: 'fp-1',
-      title: 'gestionnaire de stock pour restaurant',
+      title: 'Gestionnaire de Stock Intelligent',
       description:
-        'application pour gerer les stocks d un restaurant avec suivi des ingredients, alertes de rupture et generation de commandes fournisseurs.',
+        "Application Full Stack permettant de gérer les stocks d'un restaurant.",
       long_description:
-        'ce projet permettra de suivre les niveaux de stock, les dates de peremption, les recettes et les commandes fournisseurs afin de reduire le gaspillage et d optimiser les couts.',
+        "Gestion des ingrédients, alertes automatiques, suivi des dates de péremption, tableaux de bord et recommandations grâce à l'IA.",
       image_url: '',
       demo_url: '',
       github_url: '',
-      technologies: ['react', 'typescript', 'tailwind'],
+      technologies: ['React', 'TypeScript', 'Node.js', 'Supabase'],
       featured: false,
       order_index: 0,
       created_at: new Date().toISOString(),
     },
     {
       id: 'fp-2',
-      title: 'application pour coachs sportifs',
+      title: 'Plateforme SaaS pour Coachs Sportifs',
       description:
-        'outil pour aider les coachs sportifs a gerer leurs clients, programmes, suivis de performance et paiements.',
+        'Application de gestion complète destinée aux coachs sportifs.',
       long_description:
-        'l application integrera des profils clients, la creation de programmes, le suivi des progres, un calendrier de seances, une messagerie et un module de paiement pour simplifier la gestion quotidienne.',
+        'Gestion des clients, programmes, paiements, statistiques, messagerie et intégration de fonctionnalités IA.',
       image_url: '',
       demo_url: '',
       github_url: '',
-      technologies: ['react', 'typescript', 'stripe'],
+      technologies: ['React', 'Node.js', 'Stripe', 'IA'],
       featured: false,
       order_index: 1,
       created_at: new Date().toISOString(),
@@ -203,10 +259,12 @@ const data = {
   ],
 
   interests: [
-    'veille technologique',
-    'data et intelligence artificielle',
-    'developpement web et logiciel',
-    'vo vietnam triple champion d algerie',
+    'Développement Full Stack',
+    'Intelligence Artificielle',
+    'Machine Learning',
+    'Automatisation',
+    'Veille technologique',
+    "Vo Vietnam (Triple champion d'Algérie)",
   ],
 };
 
